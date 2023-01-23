@@ -3,8 +3,9 @@
 * Ctrl+Shift+U : Upload
 * Ctrl+Shift+B : Build
 * Ctrl+Shift+M : Buil & Uplod 
+* TEST234
 */
-//teste
+
 #include "main.h"
 #include "okapi/api.hpp"
 
@@ -104,7 +105,6 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-
 }
 
 
