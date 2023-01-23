@@ -3,6 +3,7 @@
 * Ctrl+Shift+U : Upload
 * Ctrl+Shift+B : Build
 * Ctrl+Shift+M : Buil & Uplod 
+* TEST
 */
 
 #include "main.h"
