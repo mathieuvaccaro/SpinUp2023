@@ -118,7 +118,7 @@ void Shoot()
 
 void autonomous() {
 	
-	const unsigned int delay = 0; // Delay entre chaque instruction en ms (Default : 0ms)
+	const unsigned int delay = 0; // Delay between each instruction in ms (Default : 0ms)
 	const std::string delimiter = " "; //Delimiter between the instruction and the value (Default : ' ')
 
 	// this is an array of strings that contains the instructions and thier values

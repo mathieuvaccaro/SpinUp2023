@@ -1,3 +1,5 @@
-Code pour la partie autonome du robot VEX
+Code for the vex robot
 
-Update : 23/01 18:52
+Update : 02/02/23 17:55
+
++ Add autonomous part V1
