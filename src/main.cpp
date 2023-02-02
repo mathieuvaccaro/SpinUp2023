@@ -4,10 +4,9 @@
 * Ctrl+Shift+B : Build
 * Ctrl+Shift+M : Buil & Uplod 
 */
-//teste 
+
 #include "main.h"
 #include "okapi/api.hpp"
-
 
 
 using namespace okapi;
@@ -103,23 +102,61 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
+
+void Shoot()
+{
+		const unsigned int delay = 3500 ; // Delay between wheel lift and push button pressure in ms (Default: 3500ms)
+		motorFlywheelRight.moveVelocity(FLYWHEEL_MAX_VELOCITY);
+		motorFlywheelLeft.moveVelocity(FLYWHEEL_MAX_VELOCITY/2);
+		pros::delay(delay);
+		pneumatic.set_value(1);
+		pros::delay(1000);
+		pneumatic.set_value(0);
+		motorFlywheelRight.moveVelocity(0);
+		motorFlywheelLeft.moveVelocity(0);
+}
+
 void autonomous() {
+	
+	const unsigned int delay = 0; // Delay entre chaque instruction en ms (Default : 0ms)
+	const std::string delimiter = " "; //Delimiter between the instruction and the value (Default : ' ')
 
-/** PREMIERE VERSION : Les noms des attributs/Méthodes peuvent être ammenées a être changés
- * Autonome ==> Scripté
- * 
- *  
- * Fonctions :
- *  - D_Avant(Distance) : Avancer d'une distance donné
- * 	- D_Arriere(Distance) : Reculer d'une distance donné
- * 	- R_Droite(Angle) : Rotation d'un angle donné
- *  - R_Gauche(Angle) : Rotation d'un angle donné
- *  - Tirer : Tire les Vexs
- * 
- * Distance (m)
- * Angle (°)
- **/
+	// this is an array of strings that contains the instructions and thier values
+	// Attention, put spaces only between the instructions and the values
+	std::string instructions[] = {
+		"Translation 3", 
+		"Translation -1", 
+		"Rotation 90", 
+		"Rotation -90", 
+		"Tirer"
+		};
 
+	for (size_t i = 0; i < instructions->size(); i++)
+	{
+		std::string instruction = instructions[i];
+		std::string token = instruction.substr(0, instruction.find(delimiter)); // Instruction (Translation, Rotation, Tirer)
+		std::string value = instruction.substr(instruction.find(delimiter) + 1, instruction.size()); // Value of the instruction
+		pros::lcd::set_text(0, "Etape N" + i.toString());
+
+		if (token == "Translation")
+		{
+			pros::lcd::set_text(1, "Translation de " + value + " m en cours...");	
+			drive->moveDistance(stod(value) * meter);
+		}
+		else if (token == "Rotation")
+		{
+			pros::lcd::set_text(1, "Rotation de " + value + " m en cours...");
+			drive->turnAngle(stod(value) * degree);
+		}
+		else if (token == "Tirer")
+		{
+			pros::lcd::set_text(1, "Tir en cours...");
+			Shoot();
+		}
+		pros::lcd::set_text(1, "Instruction terminée !");
+		pros::delay(delay);
+	}
+	
 
 }
 
@@ -162,6 +199,7 @@ void opcontrol()
 		{
 			debounceR1 = false;
 		}
+
 		if (controller.getDigital(ControllerDigital::R2))
 		{
 			if (!debounceR2)
@@ -217,20 +255,18 @@ void opcontrol()
 			motorFlywheelLeft.moveVelocity(0);
 		}
 		if (controller.getAnalog(ControllerAnalog::rightY)==-1)
-				{
-				drive->getModel()->arcade(
-					((controller.getAnalog(ControllerAnalog::leftY))/4),
-					(controller.getAnalog(ControllerAnalog::leftX))/4);
-	
-				}
-				else
-				{
-					drive->getModel()->arcade(
-						((controller.getAnalog(ControllerAnalog::leftY))),
-						(controller.getAnalog(ControllerAnalog::leftX)));
-				}
+		{
+			drive->getModel()->arcade(
+				((controller.getAnalog(ControllerAnalog::leftY))/4),
+				(controller.getAnalog(ControllerAnalog::leftX))/4);
+		}
+		else
+		{
+			drive->getModel()->arcade(
+				((controller.getAnalog(ControllerAnalog::leftY))),
+				(controller.getAnalog(ControllerAnalog::leftX)));
+		}
 		
 		pros::delay(100);
-
 	}
 }
