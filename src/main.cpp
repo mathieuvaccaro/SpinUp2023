@@ -71,9 +71,13 @@ using namespace okapi;
 
 Controller controller;
 Motor motorFL = Motor(PORT_FL_WHEEL, WHEEL_DIRECTION_FL, WHEEL_GEARSET, WHEEL_ENCODER_UNIT);
-Motor motorFR = Motor(PORT_FR_WHEEL, WHEEL_DIRECTION_FR, WHEEL_GEARSET, WHEEL_ENCODER_UNIT);
-Motor motorBL = Motor(PORT_BL_WHEEL, WHEEL_DIRECTION_BL, WHEEL_GEARSET, WHEEL_ENCODER_UNIT);
-Motor motorBR = Motor(PORT_BR_WHEEL, WHEEL_DIRECTION_BR, WHEEL_GEARSET, WHEEL_ENCODER_UNIT);
+Motor motorFR = Motor(PORT_FR_WHEEL, WHEEL_DIRECTION_FR, WHEEL_GEARSET, AbstractMotor::encoderUnits::invalid);
+Motor motorBL = Motor(PORT_BL_WHEEL, WHEEL_DIRECTION_BL, WHEEL_GEARSET, AbstractMotor::encoderUnits::invalid);
+Motor motorBR = Motor(PORT_BR_WHEEL, WHEEL_DIRECTION_BR, WHEEL_GEARSET, AbstractMotor::encoderUnits::invalid);
+// Motor motorFL = Motor(PORT_FL_WHEEL, WHEEL_DIRECTION_FL, WHEEL_GEARSET, WHEEL_ENCODER_UNIT);
+// Motor motorFR = Motor(PORT_FR_WHEEL, WHEEL_DIRECTION_FR, WHEEL_GEARSET, WHEEL_ENCODER_UNIT);
+// Motor motorBL = Motor(PORT_BL_WHEEL, WHEEL_DIRECTION_BL, WHEEL_GEARSET, WHEEL_ENCODER_UNIT);
+// Motor motorBR = Motor(PORT_BR_WHEEL, WHEEL_DIRECTION_BR, WHEEL_GEARSET, WHEEL_ENCODER_UNIT);
 Motor CatapulteL = Motor(PORT_LEFT_CATAPULTE, CATAPULTE_DIRECTION_L, CATAPULTE_GEAREST, CATAPULTE_ENCODER_UNIT);
 Motor CatapulteR = Motor(PORT_RIGHT_CATAPULTE, CATAPULTE_DIRECTION_R, CATAPULTE_GEAREST, CATAPULTE_ENCODER_UNIT);
 pros::ADIPort pneumatic = pros::ADIPort(PORT_PNEUMATICS, ADI_DIGITAL_OUT);
@@ -155,17 +159,19 @@ void autonomous() {
 
     // this is an array of strings that contains the instructions and thier values
     // Attention, put spaces only between the instructions and the values
-    const std::vector instructions = std::vector({
+    const std::string instructions[] = {
         "Translation 1",
         "Translation -1",
         "Rotation 90",
         "Rotation -90",
         "Translation 0.5",  
-    });
+    };
 
-    for (int i = 0; i < instructions; i++)
+    // for (int i = 0; i < instructions; i++)
+
+	for (auto &&instruction : instructions)
     {
-        std::string instruction = instructions[i];
+        // std::string instruction = instructions[i];
         std::string token = instruction.substr(0, instruction.find(delimiter)); // Instruction (Translation, Rotation, Tirer)
         std::string value = instruction.substr(instruction.find(delimiter) + 1, instruction.size()); // Value of the instruction
 
