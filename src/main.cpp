@@ -60,6 +60,13 @@ std::shared_ptr<ChassisController> drive;
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+
+struct GPS 
+{
+	int x = 0;
+	int y = 0;
+};
+
 void initialize()
 {
 	pros::lcd::initialize();
@@ -72,6 +79,8 @@ void initialize()
 
 
 }
+
+
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -102,6 +111,17 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
+
+void GPSMove(int destx, int desty)
+{
+	int tolerance = 5;
+	int module = sqrt(pow(destx,2)+pow(desty,2)); // module cm
+	for (size_t i = 0; i < module; i++)
+	{
+		
+	}
+
+}
 
 void Shoot()
 {
@@ -136,7 +156,7 @@ void autonomous() {
 		std::string instruction = instructions[i];
 		std::string token = instruction.substr(0, instruction.find(delimiter)); // Instruction (Translation, Rotation, Tirer)
 		std::string value = instruction.substr(instruction.find(delimiter) + 1, instruction.size()); // Value of the instruction
-		pros::lcd::set_text(0, "Etape N" + i.toString());
+		pros::lcd::set_text(0, "Etape N" + i);
 
 		if (token == "Translation")
 		{
